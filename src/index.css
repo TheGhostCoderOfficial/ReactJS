@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+
+/* @import url('https://fonts.googleapis.com/css2?family=Iceberg&family=Playpen+Sans:wght@500&display=swap'); */
+
+
+body {
+  /* color: #fff; */
+  width: 100vw;
+  height: 100vh;
+  font-size: 1.25em;
+  overflow-x: hidden;
+  background-color: #000;
+  box-sizing: border-box;
+  /* font-family: 'Times New Roman', Times, serif; */
+}
