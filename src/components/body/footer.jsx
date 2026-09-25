@@ -1,11 +1,10 @@
 
-
 const footer = () => {
     return (
         <>
-            <footer class="w-full border-t border-zinc-100 pt-6 -mb-6 flex flex-col justify-center items-center gap-6">
-                <p id="contacts" class="text-base">Connect with me on:</p>
-                <div class="flex gap-6">
+            <footer  className="w-full h-screen border-t border-zinc-100 pt-6 -mb-6 flex flex-col justify-center items-center gap-6">
+                <p id="contact" className="text-base">Connect with me on:</p>
+                <div className="flex gap-6">
                     <a href="https://github.com/TheGhostCoderOfficial" target="_blank" rel="noreferrer"
                         aria-label="TheGhostCoderOfficial on GitHub">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

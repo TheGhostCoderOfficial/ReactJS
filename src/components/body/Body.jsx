@@ -1,4 +1,4 @@
-// import Footer from "./footer";
+import Footer from "./footer";
 
 
 const Body = () => {
@@ -92,6 +92,7 @@ const Body = () => {
                     <span className="opacity-0 hover:tracking-widest transition-all ease-in-out duration-500 home-hero-subheading"></span>
                 </p>
             </div>
+            <Footer/>
 
         </>
     )

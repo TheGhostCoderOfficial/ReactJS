@@ -1,32 +1,79 @@
+import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
 
 const MobNav = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  // Close on ESC
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === "Escape") setIsOpen(false);
+    }
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, []);
+
+  // Close when clicking outside
+  useEffect(() => {
+    function handleClick(e) {
+      if (isOpen && menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [isOpen]);
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
+  const navLinks = ["Home", "Projects", "Experience", "Contact"];
+
   return (
     <>
-      <div className="flex flex-col sm:hidden bg-zinc-700 fixed left-6 bottom-6 z-50 shadow-md w-15 h-15 rounded-full p-4">
-        <button className="outline-hidden active:rotate-45 active:scale-50 active:opacity-0 ease-in-out transition-all duration-200 self-start m-auto" aria-label="Menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:Rcrifja:" data-state="closed">
-          <Menu className="w-6 h-6 stroke-1 text-white self-center" />
-        </button>
-        <div className="flex flex-col sm:hidden bg-zinc-700 fixed left-6 bottom-6 z-50 shadow-md w-2xs h-2xs rounded-4xl p-6 will-change-auto">
-          <button className="outline-hidden active:rotate-45 active:scale-50 active:opacity-0 ease-in-out transition-all duration-200 self-start mt-0 mr-0 ml-auto mb-auto will-change-auto" aria-label="Close" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:Rcrifja:" data-state="open">
-            <X className="w-6 h-6 stroke-1 text-white self-center" />
+      {!isOpen && (
+        <div className="flex flex-col sm:hidden bg-zinc-700 fixed left-6 bottom-6 z-50 shadow-md w-15 h-15 rounded-full p-4 justify-center hover:bg-zinc-600 items-center">
+          <button type="button" className="outline-hidden active:rotate-90 active:scale-50 transition-all duration-200 cursor-pointer" onClick={() => setIsOpen(true)} aria-label="Open menu" aria-haspopup="dialog" aria-expanded={false}>
+            <Menu className="w-6 h-6 stroke-1 text-white self-center" />
           </button>
-          <div className="text-white text-xl my-10 flex flex-col gap-6 items-center">
-            <button className="mobile-menu-label" aria-label="Home">Home</button>
-            <button className="mobile-menu-label" aria-label="Projects">Projects</button>
-            <button className="mobile-menu-label" aria-label="Experience">Experience</button>
-            <button className="mobile-menu-label" aria-label="Contact">Contact</button>
+        </div>
+      )}
+
+      {isOpen && (
+        <div ref={menuRef} className="sm:hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
+
+          <div className="flex flex-col justify-between bg-zinc-800 left-6 bottom-6 shadow-md w-[calc(100vw-3rem)] rounded-4xl p-4 absolute max-w-3xs">
+            <div className="hover:bg-zinc-700 items-center rounded-full self-end h-10">
+              <button type="button" className="self-end mb-4 p-2 rounded-full ml-auto block outline-hidden active:rotate-45 active:scale-50 duration-200 ease-in-out transition-all cursor-pointer" onClick={() => setIsOpen(false)} aria-label="Close menu">
+                <X className="w-6 h-6 stroke-1 text-white self-center" />
+              </button>
+            </div>
+
+            <nav className="flex flex-col gap-4 mt-2">
+              {navLinks.map((label) => (
+                <button key={label} type="button" className="text-white text-lg text-center py-2 px-3 rounded-lg hover:bg-zinc-700 transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                  <a href={`#${label.toLowerCase()}`} className="block">
+                    {label}
+                  </a>
+                </button>
+              ))}
+            </nav>
           </div>
         </div>
-      </div>
-
-      <div className="fixed bottom-8 right-6 sm:hidden rounded-full p-2 justify-between items-center font-medium text-sm text-white z-30">
-        <button className="whitespace-nowrap text-sm font-medium ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 py-2 h-full bg-black rounded-full flex justify-center items-center px-4 gap-1 group bg-opacity-50 hover:bg-opacity-90 transition-all ease-in-out ring-1 hover:ring-transparent ring-[#262626] cursor-pointer" aria-label="Let&#x27;s Talk" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:Rcrifja:" data-state="closed">
-          Let&#x27;s talk <ArrowRight className="stroke-1 group-hover:translate-x-0.5 transition-all ease-in-out duration-00" />
+      )}
+      
+      <div className="fixed bottom-8 right-6 sm:hidden z-30">
+        <button className="whitespace-nowrap text-sm font-medium bg-black/50 hover:bg-black/90 text-white py-2 px-4 rounded-full flex justify-center items-center gap-1 ring-1 ring-[#262626] hover:ring-transparent transition-all ease-in-out cursor-pointer ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 h-full group bg-opacity-10 hover:bg-opacity-90 " aria-label="Let&#x27;s Talk" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:Rcrifja:" data-state="closed">
+          Let&apos;s talk <ArrowRight className="stroke-1 group-hover:translate-x-0.5 transition-all ease-in-out duration-200" />
         </button>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default MobNav
+export default MobNav;

@@ -63,10 +63,6 @@ const Projects = () => {
             </div> */}
 
             <div className='flex flex-wrap gap-10 justify-center'>
-                {/* <button className="bg-[#ffffff08] border-1 p-6 rounded-2xl transition-[0.3s] backdrop-blur-xs hover:-transform-5 hover:border-[#00ffcc] hover: shadow-lg">
-                    <a className="" href="PuterSite\index.html" target="_blank" rel="noopener noreferrer"><strong className="text-white block mb-2.5">PuterSite</strong></a>
-                </button> */}
-
                 {arr.map(function (elem, id) {
                     return <div className={styles.card} key={id}>
                         <img src={elem.img} alt="" />
@@ -74,10 +70,6 @@ const Projects = () => {
                         <p className={styles.para}>The quick brown fox jumps over the lazy dog.</p>
                     </div>
                 })}
-
-
-
-
             </div>
         </>
     )
